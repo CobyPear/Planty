@@ -4,7 +4,7 @@ window.addEventListener('load', function () {
     const emailInput = document.getElementById('email-input');
     const passwordInput = document.getElementById('password-input');
     const form = document.querySelector('#sign-up');
-    const xhr = XMLHttpRequest();
+    const xhr = new XMLHttpRequest();
 
     signUpBtn.addEventListener('click', function (e) {
         e.preventDefault;
@@ -42,9 +42,10 @@ window.addEventListener('load', function () {
     };
 
     function signUpUser(email, password){
-        xhr.open('POST', 'api/singup', true);
-        HTMLTextAreaElement.setRequestHeader('application/json')
-    }
+        xhr.open('POST', 'api/signup', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.send(JSON.stringify(email, password));
+    };
 
     function showModal() {
         const modal = document.getElementById('modal');
