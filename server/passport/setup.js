@@ -1,8 +1,7 @@
 // found at https://medium.com/swlh/set-up-an-express-js-app-with-passport-js-and-mongodb-for-password-authentication-6ea05d95335c
 const bcrypt = require('bcrypt');
-const User = require('../models/Users');
+const { User } = require('../models/index');
 const passport = require('passport');
-const { hash } = require('bcrypt');
 const LocalStrategy = require('passport-local').Strategy
 
 passport.serializeUser((user, done) => {
@@ -27,12 +26,12 @@ passport.use(
                     const newUser = new User({ email, password });
                     // hash password before sending it to databse
                     bcrypt.genSalt(10, (err, salt) => {
-                        bcrypt.hash(newUser.password, salt, async (err, hash) => {
+                        bcrypt.hash(newUser.password, salt, (err, hash) => {
                             if (err) throw err;
                             newUser.password = hash;
-                            console.log(newUser)
-                            User
-                                .create(newUser)
+                            console.log('newUser ', newUser)
+                            newUser
+                                .save()
                                 .then(user => {
                                     console.log('then, user', user)
                                     return done(null, user);

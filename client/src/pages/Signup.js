@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GoogleSignup from './btn_google_signin_light_normal_web.png'
-import './signup.css'
+import API from '../utils/API';
+import './signup.css';
 
 export default () => {
 
@@ -13,6 +14,24 @@ export default () => {
             ...state,
             [name]: value
         }))
+    }
+
+    const handleSubmit = e => {
+        e.preventDefault();
+
+        const userData = {
+            email: state.email,
+            password: state.password
+        };
+
+        console.log('userData ',userData)
+        API.registerLogin(userData)
+            .then(res => console.log(res))
+            .catch(err=> {
+                console.log(err)
+                console.log(err.response)
+            })
+
     }
 
     return (
@@ -33,10 +52,8 @@ export default () => {
                 <div>
                     <button
                         className='signUpBtn'
-                        onClick={e => {
-                            e.preventDefault()
-
-                        }}>
+                        onClick={handleSubmit}
+                        >
                         Sign Up
                     </button>
                     <button className='googleSignin'
