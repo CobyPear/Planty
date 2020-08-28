@@ -29,11 +29,9 @@ passport.use(
                         bcrypt.hash(newUser.password, salt, (err, hash) => {
                             if (err) throw err;
                             newUser.password = hash;
-                            console.log('newUser ', newUser)
                             newUser
                                 .save()
                                 .then(user => {
-                                    console.log('then, user', user)
                                     return done(null, user);
                                 })
                                 .catch(err => {
