@@ -1,9 +1,10 @@
 const express = require('express');
-const router = rexpress.Router();
+const router = express.Router();
 const passport = require('passport');
 
 router.post('/register_login', (req, res, next) => {
     passport.authenticate('local', function (err, user, info) {
+        console.log('user in auth.js', )
         if (err) {
             return res.status(400).json({ errors: err });
         }
