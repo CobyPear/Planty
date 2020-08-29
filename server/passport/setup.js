@@ -3,6 +3,9 @@ const bcrypt = require('bcrypt');
 const { User } = require('../models/index');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const dotenv = require('dotenv').config();
+
 
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -56,6 +59,36 @@ passport.use(
                 return done(null, false, { message: err });
             });
     })
+);
+
+//-----------------------------------------------------------------------------------
+// google strategy
+
+passport.use(
+    new GoogleStrategy(
+        {
+            clientID: process.env.GOOGLE_CLIENT,
+            clientSecret: process.env.GOOGLE_SECRET,
+            callbackURL: '/auth/google/redirect'
+        }, (accessToken, refreshToken, profile, done) => {
+            // passport callback function
+            //check if user already exists in our db with the given profile ID
+            User.findOne({ googleId: profile.id }).then((currentUser) => {
+                if (currentUser) {
+                    //if we already have a record with the given profile ID
+                    done(null, currentUser);
+                } else {
+                    //if not, create a new user 
+                    new User({
+                        googleId: profile.id,
+                    })
+                        .save()
+                        .then((newUser) => {
+                            done(null, newUser);
+                        });
+                }
+            })
+        })
 );
 
 module.exports = passport;
