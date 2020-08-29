@@ -3,14 +3,15 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const morgan = require('morgan');
+const dotenv = require('dotenv').config();
+// dotenv.config();
 
 const passport = require('./server/passport/setup');
 const auth = require('./server/routes/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
-const MONGO_URI = process.env.MONGODB_URI || "mongodb://localhost/planty"
-
+const MONGO_URI = process.env.MONGODB_URI || process.env.LOCAL_DB
 mongoose
     .connect(MONGO_URI, { useNewUrlParser: true })
     .then(console.log(`MongoDB connected at ${MONGO_URI}`))
