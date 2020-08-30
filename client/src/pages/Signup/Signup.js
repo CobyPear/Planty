@@ -63,6 +63,14 @@ export default props => {
                         onClick={e => {
                             e.preventDefault()
                             console.log('clicked')
+                            API.googleSignin()
+                                .then(res=>{
+                                    console.log(res)
+                                })
+                                .catch(err=> {
+                                    console.log(err)
+                                    console.log(err.message)
+                                })
                         }} />
                 </div>
             </form>

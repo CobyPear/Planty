@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema(
         password: {
             type: String,
         },
+        createdAt: {
+            type: Date,
+            default: Date.now
+        },
         google_Auth: [GoogleAuth],
 
     },

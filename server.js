@@ -3,8 +3,9 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const mongoose = require('mongoose');
 const morgan = require('morgan');
-const dotenv = require('dotenv').config();
-// dotenv.config();
+const path = require('path')
+const dotenv = require('dotenv');
+dotenv.config();
 
 const passport = require('./server/passport/setup');
 const auth = require('./server/routes/auth');
@@ -16,6 +17,7 @@ mongoose
     .connect(MONGO_URI, { useNewUrlParser: true })
     .then(console.log(`MongoDB connected at ${MONGO_URI}`))
     .catch(err => console.log(err));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,8 +38,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api/auth', auth);
-app.get("/", (req, res) =>
-res.sendFile(path.join(__dirname, "../client/build/index.html"))
-);
+// app.get("/", (req, res) =>
+// res.sendFile(path.join(__dirname, "../client/build/index.html"))
+// );
 
-app.listen(PORT, () => console.log("Listening at http://localhost:"+PORT+"/"))
+app.listen(PORT, () => console.log("Listening at http://localhost:" + PORT + "/"))

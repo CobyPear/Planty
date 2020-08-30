@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const cors = require('cors');
+const corsOptions = {
+    origin: 'http://localhost:3001',
+    methods: 'GET',
+    credentials: true
+};
 
 router.post('/register_login', (req, res, next) => {
     passport.authenticate('local', function (err, user, info) {
@@ -19,16 +25,16 @@ router.post('/register_login', (req, res, next) => {
     })(req, res, next);
 });
 
-router.get('/google', passport.authenticate('google', {
+router.get('/google', cors(corsOptions), passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
 
 router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
     res.send(req.user);
-    res.send("you reached the redirect URI");
+    // res.redirect('/planty');
 });
 
-router.get('logout', (req, res) => {
+router.get('/logout', (req, res) => {
     req.logout();
     res.send(req.user);
 });
